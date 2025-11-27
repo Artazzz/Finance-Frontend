@@ -24,46 +24,56 @@ export default function TransactionForm({ onSubmit }) {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      style={{ marginTop: "16px", marginBottom: "16px" }}
-    >
-      <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
-        <div>
+    <form onSubmit={handleSubmit}>
+      <div className="form-grid">
+        <div className="form-field">
           <label>Tanggal</label>
           <input
             type="date"
+            className="input"
             value={date}
             onChange={(e) => setDate(e.target.value)}
           />
         </div>
-        <div>
+
+        <div className="form-field">
           <label>Tipe</label>
-          <select value={type} onChange={(e) => setType(e.target.value)}>
+          <select
+            className="select"
+            value={type}
+            onChange={(e) => setType(e.target.value)}
+          >
             <option value="income">Pemasukan</option>
             <option value="expense">Pengeluaran</option>
           </select>
         </div>
-        <div>
+
+        <div className="form-field">
           <label>Nominal</label>
           <input
             type="number"
+            className="input"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
         </div>
-        <div>
+
+        <div className="form-field">
           <label>Deskripsi</label>
           <input
             type="text"
+            className="input"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
       </div>
-      <button type="submit" style={{ marginTop: "8px" }}>
-        Simpan Transaksi
-      </button>
+
+      <div style={{ marginTop: "12px" }}>
+        <button type="submit" className="btn-primary">
+          Simpan Transaksi
+        </button>
+      </div>
     </form>
   );
 }

@@ -2,9 +2,9 @@ import Navbar from "./Navbar";
 
 export default function Layout({ children }) {
   return (
-    <div>
+    <div className="app-container">
       <Navbar />
-      <main style={{ padding: "16px" }}>{children}</main>
+      <main className="main-content">{children}</main>
     </div>
   );
 }

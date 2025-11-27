@@ -2,51 +2,38 @@ import { formatCurrency } from "../../utils/formatCurrency";
 
 export default function TransactionTable({ transactions }) {
   return (
-    <table
-      style={{
-        width: "100%",
-        borderCollapse: "collapse",
-        marginTop: "8px",
-      }}
-    >
+    <table className="table">
       <thead>
         <tr>
-          <th style={{ borderBottom: "1px solid #ddd", padding: "8px" }}>
-            Tanggal
-          </th>
-          <th style={{ borderBottom: "1px solid #ddd", padding: "8px" }}>
-            Tipe
-          </th>
-          <th style={{ borderBottom: "1px solid #ddd", padding: "8px" }}>
-            Nominal
-          </th>
-          <th style={{ borderBottom: "1px solid #ddd", padding: "8px" }}>
-            Deskripsi
-          </th>
+          <th>Tanggal</th>
+          <th>Tipe</th>
+          <th>Nominal</th>
+          <th>Deskripsi</th>
         </tr>
       </thead>
       <tbody>
         {transactions.length === 0 && (
           <tr>
-            <td colSpan="4" style={{ padding: "8px", textAlign: "center" }}>
+            <td colSpan="4" style={{ textAlign: "center", padding: "8px" }}>
               Belum ada transaksi
             </td>
           </tr>
         )}
+
         {transactions.map((tx) => (
           <tr key={tx.id}>
-            <td style={{ borderBottom: "1px solid #eee", padding: "8px" }}>
-              {tx.date}
+            <td>{tx.date}</td>
+            <td>
+              <span
+                className={
+                  tx.type === "income" ? "badge-income" : "badge-expense"
+                }
+              >
+                {tx.type === "income" ? "Pemasukan" : "Pengeluaran"}
+              </span>
             </td>
-            <td style={{ borderBottom: "1px solid #eee", padding: "8px" }}>
-              {tx.type === "income" ? "Pemasukan" : "Pengeluaran"}
-            </td>
-            <td style={{ borderBottom: "1px solid #eee", padding: "8px" }}>
-              {formatCurrency(tx.amount)}
-            </td>
-            <td style={{ borderBottom: "1px solid #eee", padding: "8px" }}>
-              {tx.description}
-            </td>
+            <td>{formatCurrency(tx.amount)}</td>
+            <td>{tx.description}</td>
           </tr>
         ))}
       </tbody>

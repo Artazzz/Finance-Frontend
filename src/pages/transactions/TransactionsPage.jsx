@@ -4,7 +4,6 @@ import TransactionTable from "../../components/ui/TransactionTable";
 
 export default function TransactionsPage() {
   const [transactions, setTransactions] = useState([
-    // data dummy sementara
     {
       id: 1,
       date: "2025-01-01",
@@ -27,9 +26,22 @@ export default function TransactionsPage() {
 
   return (
     <div>
-      <h2>Transaksi</h2>
-      <TransactionForm onSubmit={handleAddTransaction} />
-      <TransactionTable transactions={transactions} />
+      <div style={{ marginBottom: "8px" }}>
+        <div className="section-title">Transaksi</div>
+        <div className="section-subtitle">
+          Catat pemasukan dan pengeluaran harian Anda di sini.
+        </div>
+      </div>
+
+      <div className="transactions-layout">
+        <div className="card">
+          <TransactionForm onSubmit={handleAddTransaction} />
+        </div>
+
+        <div className="card">
+          <TransactionTable transactions={transactions} />
+        </div>
+      </div>
     </div>
   );
 }
