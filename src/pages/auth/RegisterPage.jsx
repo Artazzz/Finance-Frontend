@@ -1,34 +1,53 @@
-// src/pages/auth/LoginPage.jsx
+// src/pages/auth/RegisterPage.jsx
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { login } from "../../services/authService";
+import { register } from "../../service/authService";
 
-export default function LoginPage() {
+export default function RegisterPage() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passwordConfirmation, setPasswordConfirmation] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
 
-    if (!email || !password) {
-      setError("Email dan password wajib diisi");
+    if (!name || !email || !password || !passwordConfirmation) {
+      setError("Semua field wajib diisi");
+      return;
+    }
+    if (password !== passwordConfirmation) {
+      setError("Konfirmasi password tidak sama");
       return;
     }
 
     try {
       setLoading(true);
-      await login({ email, password });
+      await register({
+        name,
+        email,
+        password,
+        password_confirmation: passwordConfirmation,
+      });
       navigate("/");
     } catch (err) {
       console.error(err);
-      const msg =
-        err.response?.data?.message ||
-        err.response?.data?.errors?.email?.[0] ||
-        "Login gagal. Periksa email/password atau server backend.";
+      const apiErrors = err.response?.data?.errors;
+      const apiMessage = err.response?.data?.message;
+      let msg = apiMessage || "Register gagal. Coba lagi.";
+
+      if (apiErrors) {
+        const firstKey = Object.keys(apiErrors)[0];
+        if (firstKey && apiErrors[firstKey]?.[0]) {
+          msg = apiErrors[firstKey][0];
+        }
+      }
+
       setError(msg);
     } finally {
       setLoading(false);
@@ -49,15 +68,15 @@ export default function LoginPage() {
       <div
         className="card"
         style={{
-          maxWidth: 480,
+          maxWidth: 520,
           width: "100%",
           padding: "32px 36px",
           borderRadius: 16,
         }}
       >
-        <h2 style={{ marginBottom: 8, fontSize: "1.8rem" }}>Masuk</h2>
+        <h2 style={{ marginBottom: 8, fontSize: "1.8rem" }}>Daftar Akun</h2>
         <p style={{ color: "#9ca3af", marginBottom: 20 }}>
-          Login untuk mengakses dashboard keuangan.
+          Buat akun untuk menggunakan Sistem Manajemen Keuangan.
         </p>
 
         {error && (
@@ -77,23 +96,28 @@ export default function LoginPage() {
           style={{
             display: "flex",
             flexDirection: "column",
-            gap: 18,
+            gap: 16,
           }}
         >
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <label style={{ fontSize: "0.9rem" }}>Nama</label>
+            <input
+              type="text"
+              className="input"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Nama lengkap"
+            />
+          </div>
+
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
             <label style={{ fontSize: "0.9rem" }}>Email</label>
             <input
               type="email"
               className="input"
-              placeholder="habiel@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              style={{
-                height: 44,
-                fontSize: "0.95rem",
-                padding: "10px 14px",
-                borderRadius: 10,
-              }}
+              placeholder="habiel@example.com"
             />
           </div>
 
@@ -102,15 +126,20 @@ export default function LoginPage() {
             <input
               type="password"
               className="input"
-              placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              style={{
-                height: 44,
-                fontSize: "0.95rem",
-                padding: "10px 14px",
-                borderRadius: 10,
-              }}
+              placeholder="Minimal 8 karakter"
+            />
+          </div>
+
+          <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+            <label style={{ fontSize: "0.9rem" }}>Konfirmasi Password</label>
+            <input
+              type="password"
+              className="input"
+              value={passwordConfirmation}
+              onChange={(e) => setPasswordConfirmation(e.target.value)}
+              placeholder="Ulangi password"
             />
           </div>
 
@@ -123,10 +152,9 @@ export default function LoginPage() {
               height: 46,
               fontSize: "1rem",
               fontWeight: 600,
-              width: "100%",
             }}
           >
-            {loading ? "Masuk..." : "Masuk"}
+            {loading ? "Mendaftarkan..." : "Daftar"}
           </button>
         </form>
 
@@ -138,12 +166,12 @@ export default function LoginPage() {
             textAlign: "center",
           }}
         >
-          Belum punya akun?{" "}
+          Sudah punya akun?{" "}
           <Link
-            to="/register"
+            to="/login"
             style={{ color: "#22c55e", textDecoration: "none" }}
           >
-            Daftar di sini
+            Masuk di sini
           </Link>
         </div>
       </div>

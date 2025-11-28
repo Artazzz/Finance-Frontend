@@ -1,10 +1,12 @@
+// src/components/layout/Navbar.jsx
 import { Link, useNavigate } from "react-router-dom";
+import { logout } from "../../services/authService";
 
 export default function Navbar() {
   const navigate = useNavigate();
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
+  const handleLogout = async () => {
+    await logout();
     navigate("/login");
   };
 

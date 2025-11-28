@@ -1,4 +1,11 @@
 /* src/styles/global.css */
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+}
 
 /* Font & background umum */
 :root {
@@ -206,4 +213,17 @@
       grid-template-columns: 1fr;
     }
   }
+
+  .dashboard-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;          /* jarak antar kartu */
+    margin-bottom: 32px;
+  }
+  
+  .summary-card {
+    flex: 1 1 260px;    /* minimal lebar 260px, sisanya fleksibel */
+    padding: 20px;
+  }
+  
   
