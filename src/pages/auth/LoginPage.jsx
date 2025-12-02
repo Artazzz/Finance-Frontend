@@ -57,7 +57,7 @@ export default function LoginPage() {
       >
         <h2 style={{ marginBottom: 8, fontSize: "1.8rem" }}>Masuk</h2>
         <p style={{ color: "#9ca3af", marginBottom: 20 }}>
-          Login untuk mengakses dashboard keuangan.
+          Login untuk mengakses beranda.
         </p>
 
         {error && (
